@@ -5,3 +5,10 @@
 target
 Example/target
 Website/javadocs
+/jetpacker06s-hypixel-app/compiled/
+/hypixel-api-core/
+/hypixel-api-example/
+/hypixel-api-transport-apache/
+/hypixel-api-transport-reactor/
+/hypixel-api-transport-unirest/
+/jetpacker06s-hypixel-app/

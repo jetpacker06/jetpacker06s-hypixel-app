@@ -12,7 +12,7 @@ public class ExampleUtil {
     public static final HypixelAPI API;
 
     static {
-        String key = System.getProperty("apiKey", "64bd424e-ccb0-42ed-8b66-6e42a135afb4"); // arbitrary key, replace with your own to test or use the property
+        String key = System.getProperty("apiKey", "b97a8655-29a9-4d20-aa21-d4dbe418e143"); // arbitrary key, replace with your own to test or use the property
         API = new HypixelAPI(new ApacheHttpClient(UUID.fromString(key)));
     }
 
