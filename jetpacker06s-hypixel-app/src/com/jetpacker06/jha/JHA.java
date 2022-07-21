@@ -20,38 +20,49 @@ public class JHA {
         Scanner s = new Scanner(System.in);
         return s.nextLine();
     }
+    public static boolean booleanInput(String prompt) {
+        log(prompt);
+        Scanner s = new Scanner(System.in);
+        return s.nextBoolean();
+    }
     public static void main(String[] args) {
-        String input = stringInput("Enter a username or UUID.");
-        boolean isUUID = false;
-        if (input.length() == 36) {
-            log("UUID detected...");
-            isUUID = true;
-        } else {
-            log("Username detected...");
-        }
-        PlayerReply apiReply = null;
-        try {
-            if (isUUID) {
-                apiReply = API.getPlayerByUuid(UUID.fromString(input)).get();
-            } else {
-                apiReply = API.getPlayerByName(input).get();
+        while (true) {
+            String input = stringInput("Enter a username or UUID, or 0 to quit.");
+            if (input.equals("0")) {
+                API.shutdown();
+                return;
             }
-        } catch (ExecutionException e) {
-            log("ExecutionException occurred");
-        } catch (InterruptedException ignored) {
-            log("InterruptedException occurred");
-        } finally {
-            API.shutdown();
+            boolean isUUID = false;
+            if (input.length() == 36) {
+                log("UUID detected...");
+                isUUID = true;
+            } else {
+                log("Username detected...");
+            }
+            PlayerReply apiReply = null;
+            try {
+                if (isUUID) {
+                    apiReply = API.getPlayerByUuid(UUID.fromString(input)).get();
+                } else {
+                    apiReply = API.getPlayerByName(input).get();
+                }
+            } catch (ExecutionException e) {
+                log("An ExecutionException occurred.");
+            } catch (InterruptedException ignored) {
+                log("An InterruptedException occurred.");
+            }
+            if (apiReply == null) {
+                log("Something went wrong");
+                continue;
+            }
+            PlayerReply.Player player = apiReply.getPlayer();
+            if (!player.exists()) {
+                log("Player does not exist!");
+                continue;
+            }
+            log(player.getName() + " is currently " + (player.isOnline() ? "online." : "offline."));
+            log("Rank: " + player.getHighestRank());
+            log("Hypixel level: " + player.getNetworkLevel());
         }
-        if (apiReply == null) {
-            log("Something went wrong");
-            return;
-        }
-        PlayerReply.Player player = apiReply.getPlayer();
-        if (!player.exists()) {
-            log("Player does not exist!");
-            return;
-        }
-        log("Here is " + player.getName() + "'s rank: " + player.getHighestRank());
     }
 }
